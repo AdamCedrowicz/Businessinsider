@@ -21,17 +21,20 @@ for v in lst:
         soup = BeautifulSoup(result.text , "html.parser")
         cancellled_characters = ['/',':','*','?','"','<','>','|']
         # wyciagamy tytuł
-        title = soup.find('h1', {'class' : 'article_title'}).get_text()
-        title = ''.join([c for c in title if c not in cancellled_characters])
-        # wybieramy czesci tekstu i łączymy je w jeden
-        rows = soup.find_all('p', {'class' : 'article_p'})
-        content_parts = []
-        for row in rows:         
-            content_parts.append(row.get_text())
-        content = ' '.join(content_parts)
-        # zapisujemy do pliku
-        with open(title + '.txt', 'w') as f:
-            f.write(content)
-        # czyszczenie zmiennych
-        content_parts.clear() 
-        content = None
+        if soup.find('h1', {'class' : 'article_title'}) is None :
+            pass
+        else :
+            title = soup.find('h1', {'class' : 'article_title'}).get_text() 
+            title = ''.join([c for c in title if c not in cancellled_characters])
+            # wybieramy czesci tekstu i łączymy je w jeden
+            rows = soup.find_all('p', {'class' : 'article_p'})
+            content_parts = []
+            for row in rows:         
+                content_parts.append(row.get_text())
+            content = ' '.join(content_parts)
+            # zapisujemy do pliku
+            with open(title + '.txt', 'w', encoding="utf-8") as f:
+                f.write(content)
+            # czyszczenie zmiennych
+            content_parts.clear() 
+            content = None 
